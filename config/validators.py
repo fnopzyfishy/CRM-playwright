@@ -4,11 +4,6 @@ if TYPE_CHECKING:
     from config.settings import BrowserSettings, Settings
 
 
-def validate_positive_int(value: int, field_name: str) -> None:
-    if value < 0:
-        raise ValueError(f"'{field_name}' must be >= 0, got {value}")
-
-
 def validate_browser_dimensions(browser: BrowserSettings) -> None:
     if browser.width < 320:
         raise ValueError('Width must be >= 320px for normal UI rendering')
@@ -30,12 +25,3 @@ def validate_environment_rules(settings: Settings) -> None:
             raise ValueError('Production requires Chromium for stability')
         if settings.browser.slow_mo > 0:
             raise ValueError('slow_mo must be 0 in production')
-
-
-def validate_url(url: str) -> None:
-    if not url or not url.strip():
-        raise ValueError('base_url cannot be empty')
-    if not (url.startswith('http://') or url.startswith('https://')):
-        raise ValueError('base_url must start with http:// or https://')
-    if len(url) > 500:
-        raise ValueError('base_url is too long (max 500 chars)')
